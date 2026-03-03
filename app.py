@@ -353,7 +353,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7605456088723739"
      crossorigin="anonymous"></script>
-<title>Citrini 2028 GIC Tracker</title>
+<title>AI Crisis Prediction Tracker</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1111,7 +1111,7 @@ body {
 
 <div class="topbar">
     <div>
-        <h1>Citrini 2028 GIC Tracker</h1>
+        <h1>AI Crisis Prediction Tracker</h1>
         <div class="subtitle">Tracking the predictions from "The 2028 Global Intelligence Crisis" memo</div>
     </div>
     <div class="topbar-right">
