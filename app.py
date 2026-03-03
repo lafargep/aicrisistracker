@@ -1127,7 +1127,7 @@ body {
 
 <div class="memo-banner">
     <span class="material-icons">info</span>
-    <span><strong>Note:</strong> This memo is a speculative scenario exercise by Citrini Research &amp; Alap Shah (Feb 22, 2026), not a prediction. This dashboard tracks real-time data against the scenario's thesis for monitoring purposes.</span>
+    <span><strong>Note:</strong> This memo is a speculative scenario exercise by Citrini Research &amp; Alap Shah (Feb 22, 2026), not a prediction. This dashboard tracks real-time data against the scenario's thesis for monitoring purposes. It was not developed by Citrini Research, and is meant as an educational project to track publicly available data around predictions included in the report.</span>
 </div>
 
 <div class="nav-tabs" id="nav-tabs">
