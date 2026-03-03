@@ -1112,7 +1112,7 @@ body {
 <div class="topbar">
     <div>
         <h1>AI Crisis Prediction Tracker</h1>
-        <div class="subtitle">Tracking the predictions from "The 2028 Global Intelligence Crisis" memo</div>
+        <div class="subtitle">Tracking the predictions from <a href="https://www.citriniresearch.com/p/2028gic" target="_blank" style="color:inherit;text-decoration:underline;">"The 2028 Global Intelligence Crisis"</a> memo by Citrini Research</div>
     </div>
     <div class="topbar-right">
         <div class="status">
