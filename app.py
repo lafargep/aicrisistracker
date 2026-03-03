@@ -15,11 +15,11 @@ The dashboard auto-refreshes data every 5 minutes.
 """
 
 import json
+import os
 import threading
 import time
 import logging
 from datetime import datetime, timedelta
-import os
 
 from flask import Flask, jsonify, Response
 
@@ -43,7 +43,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 REFRESH_INTERVAL_SEC = 300          # 5 minutes
 PORT = 8050
-FRED_API_KEY = os.environ.get("b3b8d972fefb2133e4acc1dacf2825b4", None) # Optional: set to your FRED API key for economic data
+FRED_API_KEY = os.environ.get("FRED_API_KEY", "b3b8d972fefb2133e4acc1dacf2825b4")  # Uses env var on Railway, falls back to key
                                     # Get one free at https://fred.stlouisfed.org/docs/api/api_key.html
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
@@ -1974,9 +1974,9 @@ setInterval(fetchData, AUTO_REFRESH_MS);
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
-if __name__ == "__main__":
-    print(f"""
-# Start background refresh for production (gunicorn)
+# Production startup: refresh data and start background thread immediately
+# (needed for gunicorn, which doesn't run the if __name__ block)
+# ---------------------------------------------------------------------------
 refresh_data()
 _bg = threading.Thread(target=background_refresh, daemon=True)
 _bg.start()
@@ -1984,127 +1984,3 @@ _bg.start()
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))
     app.run(host="0.0.0.0", port=port, debug=False)
-```
-
-Save and close the file.
-
----
-
-**Step 5: Create a GitHub account and repository**
-
-If you don't have a GitHub account, go to [github.com](https://github.com) and sign up (free).
-
-Then go to [github.com/new](https://github.com/new) and create a new repository:
-- Name: `aicrisistracker`
-- Keep it **Public** (or Private, your choice)
-- Don't check any boxes for README or .gitignore
-- Click **Create repository**
-
-GitHub will show you a page with setup instructions. Keep that page open.
-
----
-
-**Step 6: Push your code to GitHub**
-
-Back in Terminal:
-```
-cd ~/aicrisistracker
-git init
-git add .
-git commit -m "Initial dashboard"
-git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/aicrisistracker.git
-git push -u origin main
-```
-
-Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username. It will ask you to authenticate — follow the prompts (you may need to create a personal access token at [github.com/settings/tokens](https://github.com/settings/tokens) if you haven't used Git from Terminal before).
-
----
-
-**Step 7: Deploy on Railway**
-
-1. Go to [railway.app](https://railway.app) and click **"Login"** → sign in with your GitHub account
-2. Click **"New Project"**
-3. Click **"Deploy from GitHub Repo"**
-4. Select your `aicrisistracker` repo from the list
-5. Railway will automatically detect it's a Python project, install dependencies, and start building
-
-Wait about 2-3 minutes for the build to complete. You'll see logs scrolling — when you see "Listening on 0.0.0.0" or similar, it's running.
-
----
-
-**Step 8: Add your FRED API key**
-
-In Railway:
-1. Click on your deployed service
-2. Go to the **"Variables"** tab
-3. Click **"New Variable"**
-4. Name: `FRED_API_KEY` — Value: your FRED API key
-5. Railway will automatically redeploy with the new variable
-
----
-
-**Step 9: Get a Railway URL to test**
-
-1. In Railway, click on your service
-2. Go to **"Settings"** → scroll to **"Networking"**
-3. Click **"Generate Domain"**
-4. You'll get a URL like `aicrisistracker-production.up.railway.app`
-5. Open that URL in your browser — you should see your dashboard working with live data
-
-If it works, you're 90% done. If you see errors, click the **"Deployments"** tab in Railway and check the logs to see what went wrong.
-
----
-
-**Step 10: Connect aicrisistracker.org**
-
-Still in Railway Settings → Networking:
-1. Click **"Custom Domain"**
-2. Type `aicrisistracker.org` and click Add
-3. Railway will show you DNS records you need to add — it will look something like:
-   - Type: `CNAME`
-   - Value: `your-app.up.railway.app`
-
-Now go to wherever you bought `aicrisistracker.org` and find the **DNS settings** (usually under "Domain Management" or "DNS Records"). The exact steps depend on your registrar:
-
-**If you used Namecheap:**
-1. Log in → Dashboard → click "Manage" next to aicrisistracker.org
-2. Go to "Advanced DNS" tab
-3. Delete any existing A or CNAME records for `@` and `www`
-4. Add: Type `CNAME`, Host `@`, Value = the Railway target
-5. Add: Type `CNAME`, Host `www`, Value = the Railway target
-6. (Namecheap may not allow CNAME on root — if so, use their "URL Redirect" to point `@` to `www.aicrisistracker.org`, then CNAME `www` to Railway)
-
-**If you used Cloudflare:**
-1. Log in → select aicrisistracker.org → DNS
-2. Add: Type `CNAME`, Name `@`, Target = the Railway target
-3. Add: Type `CNAME`, Name `www`, Target = the Railway target
-
-**If you used Google Domains / Squarespace Domains:**
-1. Log in → DNS → Custom Records
-2. Add: Type `CNAME`, Host `@`, Data = the Railway target
-3. Add: Type `CNAME`, Host `www`, Data = the Railway target
-
-After saving, wait 5-30 minutes for DNS to propagate. SSL is handled automatically by Railway.
-
----
-
-**Step 11: Verify it's live**
-
-Open your browser and go to:
-```
-https://aicrisistracker.org
-```
-
-You should see your full dashboard with live data, all tabs working. That's it — you're live.
-
----
-
-**Quick reference for ongoing maintenance:**
-
-If you ever want to update the dashboard, edit the files in `~/aicrisistracker/`, then:
-```
-cd ~/aicrisistracker
-git add .
-git commit -m "Description of what you changed"
-git push
