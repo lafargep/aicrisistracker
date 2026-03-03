@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-8080} --timeout 120"]
+ENTRYPOINT ["python", "-c", "import os, subprocess; port = os.environ.get('PORT', '8080'); subprocess.run(['gunicorn', 'app:app', '--bind', f'0.0.0.0:{port}', '--timeout', '120'])"]
