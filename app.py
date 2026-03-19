@@ -1710,11 +1710,12 @@ function renderPrivateCredit() {
 
     function pcStockChip(ticker, label) {
         const s = stocks[ticker];
-        if (!s) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + ticker + ': N/A</span>';
-        const color = s.day_change >= 0 ? '#22c55e' : '#ef4444';
-        const arrow = s.day_change >= 0 ? '\u25B2' : '\u25BC';
+        if (!s || s.price === undefined) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + ticker + ': N/A</span>';
+        const chg = s.day_change || 0;
+        const color = chg >= 0 ? '#22c55e' : '#ef4444';
+        const arrow = chg >= 0 ? '\u25B2' : '\u25BC';
         return '<span style="display:inline-block;padding:2px 8px;background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;border-radius:10px;font-size:11px;margin:2px;font-weight:600;">' +
-            ticker + ' $' + s.current.toFixed(2) + ' ' + arrow + s.day_change.toFixed(1) + '% <span style="color:#999;font-weight:400;">' + label + '</span></span>';
+            ticker + ' $' + s.price.toFixed(2) + ' ' + arrow + chg.toFixed(1) + '% <span style="color:#999;font-weight:400;">' + label + '</span></span>';
     }
 
     function pcFredChip(seriesId, label) {
@@ -1757,8 +1758,8 @@ function renderPrivateCredit() {
     html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px;">';
 
     // BDC ETF
-    const bizdPrice = bizd ? '$' + bizd.current.toFixed(2) : 'N/A';
-    const bizdChg = bizd ? bizd.day_change : null;
+    const bizdPrice = (bizd && bizd.price !== undefined) ? '$' + bizd.price.toFixed(2) : 'N/A';
+    const bizdChg = (bizd && bizd.day_change !== undefined) ? bizd.day_change : null;
     const bizdColor = bizdChg >= 0 ? '#22c55e' : '#ef4444';
     html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
     html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">BIZD (BDC ETF)</div>';
