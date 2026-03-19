@@ -1817,6 +1817,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Because private credit funds are opaque, publicly traded BDCs serve as the best available stress signal. Sharp drawdowns indicate fundamental cracks. As of early 2026, BDCs were down ~16% YoY.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> BIZD drawdown > 15% from 52-week high, or multiple BDCs trading below NAV</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('BIZD', 'BDC ETF') + pcStockChip('ARCC', 'Ares') + pcStockChip('MAIN', 'Main St') + pcStockChip('FSK', 'FS KKR') + pcStockChip('BXSL', 'Blackstone') + pcStockChip('OBDC', 'Blue Owl') + pcStockChip('GSBD', 'Goldman') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> BDCs are publicly traded entities that hold portfolios of private credit loans, making them the only window into the otherwise opaque private credit market. <strong style="color:#e2e8f0;">BIZD</strong> is the sector ETF — a single-ticker health check. <strong style="color:#e2e8f0;">ARCC</strong> (Ares Capital) is the largest BDC by assets; its NAV discount/premium signals institutional confidence. <strong style="color:#e2e8f0;">MAIN</strong> focuses on lower middle-market firms most vulnerable to economic slowdowns. <strong style="color:#e2e8f0;">FSK</strong> (FS KKR) has historically carried higher non-accrual rates. <strong style="color:#e2e8f0;">BXSL</strong> and <strong style="color:#e2e8f0;">OBDC</strong> are backed by Blackstone and Blue Owl respectively — the two largest private credit platforms. <strong style="color:#e2e8f0;">GSBD</strong> provides a read on bank-affiliated private credit appetite.';
+    html += '</div>';
     html += '</div>';
 
     // Bank NBFI Exposure
@@ -1825,6 +1828,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Banks provide credit lines and warehouse facilities to private credit funds — accounting for ~11.2% of bank loans in early 2026. Watch for pullbacks in these facilities, which would force funds to dump liquid assets.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Bank stocks declining while credit spreads widen simultaneously; Senior Loan Officer Survey showing tightening > 40%</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('JPM', 'Largest NBFI lender') + pcStockChip('GS', 'SRT originator') + pcStockChip('MS', 'Wealth channel') + pcStockChip('C', 'Credit lines') + pcFredChip('DRTSCILM', 'Tightening') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> Per the Moody\'s report, bank lending to NBFIs has reached ~11.2% of total bank loans and is growing. <strong style="color:#e2e8f0;">JPM</strong> is the largest provider of credit lines and warehouse facilities to private credit funds. <strong style="color:#e2e8f0;">GS</strong> is a major originator of Significant Risk Transfers (SRTs). <strong style="color:#e2e8f0;">MS</strong> is expanding private credit access through its wealth management channel, creating new retail-to-private-credit linkages. <strong style="color:#e2e8f0;">C</strong> provides significant revolving credit facilities to fund managers. <strong style="color:#e2e8f0;">DRTSCILM</strong> (FRED) is the Federal Reserve\'s Senior Loan Officer Survey — when banks report tightening standards for commercial and industrial loans, it signals they\'re pulling back from NBFI lending too.';
+    html += '</div>';
     html += '</div>';
 
     // Significant Risk Transfers
@@ -1833,6 +1839,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Banks pay private credit investors to absorb "first loss" risk on loan portfolios. A freeze or spike in SRT pricing indicates banks can\'t offload risk. Monitor bank stock performance alongside credit spreads as a proxy.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Sudden widening of HY spreads + bank stock selloff = potential SRT market freeze</div>';
     html += '<div style="margin-top:8px;">' + pcFredChip('BAMLH0A0HYM2', 'HY spread') + pcFredChip('BAMLH0A3HYC', 'CCC spread') + pcStockChip('GS', 'SRT proxy') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> SRT pricing is not publicly available, so we use proxies. <strong style="color:#e2e8f0;">BAMLH0A0HYM2</strong> (HY spread) measures the option-adjusted spread on high-yield corporate bonds — when this widens, it signals that risk is being repriced across all credit markets, including the SRT market. <strong style="color:#e2e8f0;">BAMLH0A3HYC</strong> (CCC spread) tracks the most distressed tier of credit — a spike here means the weakest borrowers (exactly the type in private credit portfolios) are facing severe stress. <strong style="color:#e2e8f0;">GS</strong> is one of the largest SRT arrangers; its stock price reflects confidence in the structured risk transfer market.';
+    html += '</div>';
     html += '</div>';
 
     // Alt Managers
@@ -1841,6 +1850,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">These firms manage private credit funds. Their stock prices reflect fundraising momentum, deployment pace, and market confidence in the asset class. A drawdown here signals institutional investors pulling back.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Alt manager stocks falling > 20% while fund AUM growth stalls</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('BX', 'Blackstone') + pcStockChip('APO', 'Apollo') + pcStockChip('ARES', 'Ares') + pcStockChip('KKR', 'KKR') + pcStockChip('OWL', 'Blue Owl') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> These are the General Partners (GPs) that manage private credit funds. Their stock prices reflect fundraising momentum, deployment pace, and investor confidence in the asset class. <strong style="color:#e2e8f0;">BX</strong> (Blackstone) is the largest alternative asset manager globally with massive private credit AUM. <strong style="color:#e2e8f0;">APO</strong> (Apollo) is a major originator of direct lending and insurance-linked credit strategies. <strong style="color:#e2e8f0;">ARES</strong> is the purest-play credit manager — its stock is the most direct proxy for private credit market health. <strong style="color:#e2e8f0;">KKR</strong> is expanding aggressively into private credit and has significant cross-fund leverage. <strong style="color:#e2e8f0;">OWL</strong> (Blue Owl) specializes in direct lending and technology lending — highly exposed to the software concentration risk.';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
 
@@ -1874,6 +1886,9 @@ function renderPrivateCredit() {
     html += '</div>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#f59e0b;">Stress trigger:</strong> CCC spread > 1200bps; HY spread > 600bps = default wave imminent</div>';
     html += '<div style="margin-top:8px;">' + pcFredChip('BAMLH0A0HYM2', 'HY spread') + pcFredChip('BAMLH0A3HYC', 'CCC spread') + pcStockChip('HYG', 'HY bond ETF') + pcStockChip('JNK', 'HY alt') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> Credit spreads are the market\'s real-time assessment of default risk. <strong style="color:#e2e8f0;">BAMLH0A0HYM2</strong> tracks the overall high-yield spread — historically, readings above 600bps have preceded default waves. <strong style="color:#e2e8f0;">BAMLH0A3HYC</strong> isolates the CCC-rated tier (the most distressed) — these borrowers overlap heavily with private credit portfolios. <strong style="color:#e2e8f0;">HYG</strong> and <strong style="color:#e2e8f0;">JNK</strong> are liquid high-yield bond ETFs whose price movements and fund flows signal whether institutional investors are fleeing credit risk. Large outflows from these ETFs can create forced selling that spills into private credit valuations.';
+    html += '</div>';
     html += '</div>';
 
     // Interest Coverage
@@ -1882,6 +1897,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Higher-for-longer rates compress the ratio of borrower earnings (EBITDA) to interest expenses. Most private credit loans are floating-rate. The Fed Funds rate and 10-Year yield directly drive this pressure. When EBITA/interest expense drops below 1.5x, defaults accelerate.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#f59e0b;">Stress trigger:</strong> Fed Funds > 5% sustained; 10Y yield > 5%; leveraged loan ETF (BKLN) declining</div>';
     html += '<div style="margin-top:8px;">' + pcFredChip('FEDFUNDS', 'Rate pressure') + pcFredChip('DGS10', '10Y yield') + pcStockChip('BKLN', 'Senior loans') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> Most private credit loans are floating-rate, meaning borrower interest costs move directly with benchmark rates. <strong style="color:#e2e8f0;">FEDFUNDS</strong> is the Federal Reserve\'s overnight rate — the base from which all floating-rate private credit loans are priced. Above 5%, many borrowers\' interest coverage ratios fall below the critical 1.5x threshold. <strong style="color:#e2e8f0;">DGS10</strong> (10-Year Treasury yield) reflects longer-term rate expectations and refinancing costs. <strong style="color:#e2e8f0;">BKLN</strong> (Invesco Senior Loan ETF) tracks the leveraged loan market — the closest public-market analog to private credit. Declining BKLN prices signal rising default expectations among floating-rate borrowers.';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
 
@@ -1898,6 +1916,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Semi-liquid "evergreen" and "interval" funds offer redemption windows despite holding illiquid assets. When redemption requests exceed liquidity buffers, funds impose gates — limiting withdrawals. This is a primary trigger for systemic fear, as it signals that asset values may be overstated. Watch credit ETF flows and VIX for early warnings.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> News of fund gating + VIX spike above 30 + credit ETF outflows</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('LQD', 'IG liquidity') + pcStockChip('HYG', 'HY flows') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> Redemption gating is not directly observable until it happens, so we watch for precursor signals. <strong style="color:#e2e8f0;">LQD</strong> (investment-grade bond ETF) tracks liquidity in the safest tier of credit — when even IG bonds see outflows, it signals a broad "risk-off" move that will cascade into private credit. <strong style="color:#e2e8f0;">HYG</strong> (high-yield bond ETF) is more directly comparable to private credit quality. Large, sustained outflows from HYG indicate investors fleeing credit risk — the same dynamic that pressures semi-liquid private credit funds toward gating. A simultaneous decline in both LQD and HYG is a strong warning of impending liquidity stress.';
+    html += '</div>';
     html += '</div>';
 
     // Subscription Lines & System Liquidity
@@ -1906,6 +1927,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Private credit funds use short-term bank loans (subscription lines) to bridge capital calls. A pullback in these lines forces funds to sell liquid assets, spreading stress to public markets. System-wide liquidity (Fed reserves, reverse repo) provides the backdrop — when liquidity tightens, subscription lines are among the first facilities banks pull.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> Reserve balances declining rapidly; reverse repo near zero; bank stocks falling</div>';
     html += '<div style="margin-top:8px;">' + pcFredChip('RRPONTSYD', 'Reverse repo') + pcFredChip('WRESBAL', 'Fed reserves') + pcStockChip('JPM', 'Bank health') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> System-wide liquidity determines whether banks can continue providing subscription lines and warehouse facilities to private credit funds. <strong style="color:#e2e8f0;">RRPONTSYD</strong> (Overnight Reverse Repo) measures excess cash parked at the Fed — as this declines toward zero, the financial system\'s liquidity buffer shrinks and banks become more selective about extending credit lines. <strong style="color:#e2e8f0;">WRESBAL</strong> (Reserve Balances) tracks total reserves in the banking system — shrinking reserves from quantitative tightening reduce banks\' capacity to lend to NBFIs. <strong style="color:#e2e8f0;">JPM</strong> is the largest provider of subscription line facilities; its stock performance reflects confidence in the bank-to-fund lending channel.';
+    html += '</div>';
     html += '</div>';
 
     // CLO & Structural Complexity
@@ -1914,6 +1938,9 @@ function renderPrivateCredit() {
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Over $100 billion of private credit CLOs now securitize middle-market direct loans. This adds leverage layers invisible to end investors and creates potential for contagion through the structured finance chain. The corporate debt-to-GVA ratio has risen significantly, indicating elevated leverage across the system.</p>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> CLO tranche downgrades; widening of IG-to-HY spread differential; BKLN declining while loan issuance rises</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('BKLN', 'Loan market') + pcStockChip('LQD', 'IG credit') + pcFredChip('BAMLH0A0HYM2', 'HY spread') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> Private credit CLOs add a hidden leverage layer that amplifies losses. <strong style="color:#e2e8f0;">BKLN</strong> (Senior Loan ETF) is the closest public-market proxy for CLO collateral quality — declining prices signal deteriorating loan fundamentals that would trigger CLO tranche downgrades. <strong style="color:#e2e8f0;">LQD</strong> (IG Bond ETF) provides a benchmark for the "quality gap" — when the spread between LQD and HYG widens sharply, it indicates risk repricing that would hit CLO equity and mezzanine tranches first. <strong style="color:#e2e8f0;">BAMLH0A0HYM2</strong> (HY spread) captures the broad credit environment in which private credit CLOs operate.';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
 
@@ -1934,6 +1961,9 @@ function renderPrivateCredit() {
     html += '</div>';
     html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#06b6d4;">Stress trigger:</strong> IGV drawdown > 25%; cloud/SaaS revenue deceleration; AI agent adoption displacing per-seat software models</div>';
     html += '<div style="margin-top:8px;">' + pcStockChip('IGV', 'Software ETF') + pcStockChip('XLK', 'Tech sector') + pcStockChip('WCLD', 'Cloud/SaaS') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> The Moody\'s report identifies software and tech services as the single largest concentration risk in private credit (~21% direct, ~40% including broader tech). <strong style="color:#e2e8f0;">IGV</strong> (iShares Software ETF) is the most direct proxy — it holds enterprise software companies that match the profile of private credit borrowers (mid-market, recurring revenue, high leverage). A 25%+ drawdown in IGV would signal severe stress in the exact sector where private credit is most concentrated. <strong style="color:#e2e8f0;">XLK</strong> provides the broader tech context. <strong style="color:#e2e8f0;">WCLD</strong> (WisdomTree Cloud Computing) tracks cloud and SaaS companies — the segment most vulnerable to AI-driven per-seat model disruption, which is also the Citrini memo\'s core thesis.';
+    html += '</div>';
     html += '</div>';
 
     // Cross-reference with Citrini
@@ -1941,6 +1971,9 @@ function renderPrivateCredit() {
     html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Cross-Reference: Citrini Memo Overlap</h4>';
     html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">The Citrini "2028 Global Intelligence Crisis" memo predicts severe SaaS disruption from AI agents — the same sector where private credit is most concentrated. If Citrini\'s thesis plays out, private credit losses could compound the broader economic shock through the interconnectedness channels tracked above.</p>';
     html += '<div style="margin-top:8px;">' + pcStockChip('NOW', 'ServiceNow') + pcStockChip('CRM', 'Salesforce') + pcStockChip('MNDY', 'Monday.com') + pcStockChip('ASAN', 'Asana') + '</div>';
+    html += '<div style="margin-top:10px;padding:10px 12px;background:#1e293b;border-radius:6px;font-size:12px;color:#64748b;line-height:1.6;">';
+    html += '<strong style="color:#94a3b8;">Why we track these:</strong> These public SaaS companies represent the same type of enterprise software businesses that dominate private credit lending books — but unlike private credit holdings, they have real-time pricing. <strong style="color:#e2e8f0;">NOW</strong> (ServiceNow) and <strong style="color:#e2e8f0;">CRM</strong> (Salesforce) are large-cap SaaS leaders; decelerating growth here foreshadows worse outcomes at smaller, more leveraged private-credit-financed peers. <strong style="color:#e2e8f0;">MNDY</strong> (Monday.com) and <strong style="color:#e2e8f0;">ASAN</strong> (Asana) are mid-market SaaS companies closer in profile to actual private credit borrowers. If AI agents begin replacing per-seat SaaS tools, these companies\' revenues would decline — and the private credit funds lending to similar companies would face correlated defaults.';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
 
