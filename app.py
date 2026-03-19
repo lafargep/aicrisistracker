@@ -1719,9 +1719,10 @@ function renderPrivateCredit() {
 
     function pcFredChip(seriesId, label) {
         const e = econ[seriesId];
-        if (!e) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + seriesId + ': N/A</span>';
+        if (!e || e.value === undefined) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + seriesId + ': N/A</span>';
+        const val = typeof e.value === 'number' ? e.value.toFixed(2) : String(e.value);
         return '<span style="display:inline-block;padding:2px 8px;background:#3b82f622;color:#3b82f6;border:1px solid #3b82f644;border-radius:10px;font-size:11px;margin:2px;font-weight:600;">' +
-            e.name + ': ' + (typeof e.value === 'number' ? e.value.toFixed(2) : e.value) + ' <span style="color:#999;font-weight:400;">' + label + '</span></span>';
+            seriesId + ': ' + val + ' <span style="color:#999;font-weight:400;">' + label + '</span></span>';
     }
 
     function stressLevel(value, thresholds) {
@@ -1732,14 +1733,15 @@ function renderPrivateCredit() {
         return '<span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:8px;font-size:11px;font-weight:700;">NORMAL</span>';
     }
 
-    // Compute stress indicators
-    const hySpread = econ['BAMLH0A0HYM2'] ? econ['BAMLH0A0HYM2'].value : null;
-    const cccSpread = econ['BAMLH0A3HYC'] ? econ['BAMLH0A3HYC'].value : null;
-    const fedFunds = econ['FEDFUNDS'] ? econ['FEDFUNDS'].value : null;
-    const dgs10 = econ['DGS10'] ? econ['DGS10'].value : null;
-    const rrp = econ['RRPONTSYD'] ? econ['RRPONTSYD'].value : null;
-    const reserves = econ['WRESBAL'] ? econ['WRESBAL'].value : null;
-    const loanTightening = econ['DRTSCILM'] ? econ['DRTSCILM'].value : null;
+    // Compute stress indicators (safely handle missing or errored data)
+    function safeVal(key) { const d = econ[key]; return (d && typeof d.value === 'number') ? d.value : null; }
+    const hySpread = safeVal('BAMLH0A0HYM2');
+    const cccSpread = safeVal('BAMLH0A3HYC');
+    const fedFunds = safeVal('FEDFUNDS');
+    const dgs10 = safeVal('DGS10');
+    const rrp = safeVal('RRPONTSYD');
+    const reserves = safeVal('WRESBAL');
+    const loanTightening = safeVal('DRTSCILM');
     const bizd = stocks['BIZD'] ? stocks['BIZD'] : null;
     const vix = stocks['^VIX'] ? stocks['^VIX'] : null;
 
