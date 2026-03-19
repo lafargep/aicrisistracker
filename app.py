@@ -120,6 +120,60 @@ STOCK_GROUPS = {
             "RDFN": {"name": "Redfin",             "prediction": "Real estate commissions compress from 3% to under 1%"},
         },
     },
+    "pc_bdc_sector": {
+        "label": "BDC Sector (Private Credit Proxy)",
+        "icon": "account_balance",
+        "tickers": {
+            "BIZD": {"name": "VanEck BDC Income ETF",       "prediction": "Key proxy for overall BDC sector health; sharp drawdowns signal private credit stress"},
+            "ARCC": {"name": "Ares Capital",                 "prediction": "Largest BDC; watch for NAV discounts and PIK income trends"},
+            "MAIN": {"name": "Main Street Capital",          "prediction": "Lower middle-market lender; early indicator of small-firm distress"},
+            "FSK":  {"name": "FS KKR Capital",               "prediction": "Significant non-accrual risk; watch dividend coverage ratio"},
+            "BXSL": {"name": "Blackstone Secured Lending",   "prediction": "Blackstone's public BDC; proxy for institutional private credit sentiment"},
+            "OBDC": {"name": "Blue Owl Capital (BDC)",       "prediction": "Technology-heavy lending book; vulnerable to software sector disruption"},
+            "GSBD": {"name": "Goldman Sachs BDC",            "prediction": "Bank-affiliated BDC; watch for correlation with bank stress"},
+        },
+    },
+    "pc_alt_managers": {
+        "label": "Alternative Asset Managers (GP Side)",
+        "icon": "business",
+        "tickers": {
+            "BX":   {"name": "Blackstone",        "prediction": "Largest alt manager; fundraising pace and AUM growth signal industry health"},
+            "APO":  {"name": "Apollo Global",      "prediction": "Major private credit originator; watch credit quality and deployment pace"},
+            "ARES": {"name": "Ares Management",    "prediction": "Pure-play credit manager; most direct private credit exposure"},
+            "KKR":  {"name": "KKR & Co",           "prediction": "Expanding aggressively into private credit; watch leverage and deal flow"},
+            "OWL":  {"name": "Blue Owl Capital",   "prediction": "Direct lending specialist; fundraising and deployment trends matter"},
+        },
+    },
+    "pc_bank_exposure": {
+        "label": "Banks with NBFI Exposure",
+        "icon": "account_balance_wallet",
+        "tickers": {
+            "JPM": {"name": "JPMorgan Chase",   "prediction": "Largest bank NBFI lender; warehouse lines and SRT exposure key"},
+            "GS":  {"name": "Goldman Sachs",     "prediction": "Major SRT originator and private credit partner"},
+            "MS":  {"name": "Morgan Stanley",    "prediction": "Growing private credit partnerships; wealth channel exposure"},
+            "C":   {"name": "Citigroup",         "prediction": "Significant NBFI credit lines; watch tightening signals"},
+        },
+    },
+    "pc_credit_etfs": {
+        "label": "Credit Market & Volatility ETFs",
+        "icon": "show_chart",
+        "tickers": {
+            "HYG":  {"name": "iShares HY Corp Bond ETF",    "prediction": "Liquid high-yield proxy; spread widening signals stress"},
+            "JNK":  {"name": "SPDR Bloomberg HY Bond ETF",  "prediction": "Alternative HY proxy; watch for outflows"},
+            "BKLN": {"name": "Invesco Senior Loan ETF",     "prediction": "Leveraged loan health; floating-rate stress indicator"},
+            "LQD":  {"name": "iShares IG Corp Bond ETF",    "prediction": "Investment grade liquidity; flight-to-quality signal"},
+            "^VIX": {"name": "CBOE Volatility Index",       "prediction": "Market fear gauge; spikes above 30 signal systemic stress risk"},
+        },
+    },
+    "pc_sector_concentration": {
+        "label": "Sector Concentration Risk",
+        "icon": "warning",
+        "tickers": {
+            "IGV":  {"name": "iShares Software ETF",        "prediction": "Software = 21-40% of private credit exposure; disruption triggers correlated defaults"},
+            "XLK":  {"name": "Technology Select SPDR",       "prediction": "Broader tech health; impacts private credit collateral values"},
+            "WCLD": {"name": "WisdomTree Cloud Computing",   "prediction": "Cloud/SaaS most exposed to AI seat-count disruption and private credit losses"},
+        },
+    },
 }
 
 # FRED series for economic data
@@ -132,6 +186,12 @@ FRED_SERIES = {
     "A191RL1Q225SBEA":  {"name": "Real GDP Growth (%)", "prediction": "Two consecutive quarters of negative growth by Q2 2027", "format": "percent"},
     "BAMLH0A0HYM2":     {"name": "HY Credit Spread (bps)", "prediction": "Widens as PE-backed software defaults cascade", "format": "bps"},
     "DEXINUS":  {"name": "USD/INR Exchange Rate",       "prediction": "Rupee falls 18% as IT services surplus evaporates", "format": "rate"},
+    "BAMLH0A3HYC":      {"name": "CCC & Lower HY Spread (bps)", "prediction": "Distressed-tier spread; spike signals imminent default wave in weakest credits", "format": "bps"},
+    "DRTSCILM":         {"name": "Loan Officer Survey: C&I Tightening (%)", "prediction": "Rising = banks pulling back lending to large/mid firms; liquidity squeeze for private credit borrowers", "format": "percent"},
+    "DGS10":            {"name": "10-Year Treasury Yield (%)", "prediction": "Higher-for-longer compresses interest coverage for floating-rate borrowers", "format": "percent"},
+    "FEDFUNDS":         {"name": "Fed Funds Rate (%)", "prediction": "Persistent elevation increases debt servicing burden across private credit portfolios", "format": "percent"},
+    "RRPONTSYD":        {"name": "Overnight Reverse Repo ($B)", "prediction": "Declining = tightening liquidity conditions; less cash buffer in financial system", "format": "billions"},
+    "WRESBAL":          {"name": "Reserve Balances at Fed ($B)", "prediction": "Shrinking reserves reduce system-wide liquidity cushion", "format": "billions"},
 }
 
 # ---------------------------------------------------------------------------
@@ -1161,6 +1221,9 @@ body {
     <div class="nav-tab" data-tab="timeline">
         <span class="material-icons">schedule</span> Scenario Timeline
     </div>
+    <div class="nav-tab" data-tab="private_credit">
+        <span class="material-icons">account_balance</span> Private Credit
+    </div>
     <div class="nav-tab" data-tab="rebuttal">
         <span class="material-icons">gavel</span> Rebuttal
     </div>
@@ -1252,6 +1315,8 @@ function render() {
         main.innerHTML = renderEconomic();
     } else if (activeTab === 'timeline') {
         main.innerHTML = renderTimeline();
+    } else if (activeTab === 'private_credit') {
+        main.innerHTML = renderPrivateCredit();
     } else if (activeTab === 'rebuttal') {
         main.innerHTML = renderRebuttal();
     } else if (activeTab === 'about') {
@@ -1639,6 +1704,256 @@ function renderTimeline() {
     return html;
 }
 
+function renderPrivateCredit() {
+    const stocks = dashData.stocks;
+    const econ = dashData.economic;
+
+    function pcStockChip(ticker, label) {
+        const s = stocks[ticker];
+        if (!s) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + ticker + ': N/A</span>';
+        const color = s.day_change >= 0 ? '#22c55e' : '#ef4444';
+        const arrow = s.day_change >= 0 ? '\u25B2' : '\u25BC';
+        return '<span style="display:inline-block;padding:2px 8px;background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;border-radius:10px;font-size:11px;margin:2px;font-weight:600;">' +
+            ticker + ' $' + s.current.toFixed(2) + ' ' + arrow + s.day_change.toFixed(1) + '% <span style="color:#999;font-weight:400;">' + label + '</span></span>';
+    }
+
+    function pcFredChip(seriesId, label) {
+        const e = econ[seriesId];
+        if (!e) return '<span style="display:inline-block;padding:2px 8px;background:#555;color:#fff;border-radius:10px;font-size:11px;margin:2px;">' + seriesId + ': N/A</span>';
+        return '<span style="display:inline-block;padding:2px 8px;background:#3b82f622;color:#3b82f6;border:1px solid #3b82f644;border-radius:10px;font-size:11px;margin:2px;font-weight:600;">' +
+            e.name + ': ' + (typeof e.value === 'number' ? e.value.toFixed(2) : e.value) + ' <span style="color:#999;font-weight:400;">' + label + '</span></span>';
+    }
+
+    function stressLevel(value, thresholds) {
+        // thresholds = {green: [min,max], yellow: [min,max], red: [min,max]}
+        if (!value && value !== 0) return '<span style="color:#888;">N/A</span>';
+        if (thresholds.red && value >= thresholds.red) return '<span style="background:#ef444422;color:#ef4444;padding:1px 8px;border-radius:8px;font-size:11px;font-weight:700;">ELEVATED</span>';
+        if (thresholds.yellow && value >= thresholds.yellow) return '<span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:8px;font-size:11px;font-weight:700;">WATCH</span>';
+        return '<span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:8px;font-size:11px;font-weight:700;">NORMAL</span>';
+    }
+
+    // Compute stress indicators
+    const hySpread = econ['BAMLH0A0HYM2'] ? econ['BAMLH0A0HYM2'].value : null;
+    const cccSpread = econ['BAMLH0A3HYC'] ? econ['BAMLH0A3HYC'].value : null;
+    const fedFunds = econ['FEDFUNDS'] ? econ['FEDFUNDS'].value : null;
+    const dgs10 = econ['DGS10'] ? econ['DGS10'].value : null;
+    const rrp = econ['RRPONTSYD'] ? econ['RRPONTSYD'].value : null;
+    const reserves = econ['WRESBAL'] ? econ['WRESBAL'].value : null;
+    const loanTightening = econ['DRTSCILM'] ? econ['DRTSCILM'].value : null;
+    const bizd = stocks['BIZD'] ? stocks['BIZD'] : null;
+    const vix = stocks['^VIX'] ? stocks['^VIX'] : null;
+
+    let html = '';
+
+    // ---- Header ----
+    html += '<div class="section-header" style="margin-bottom:12px;"><h2 style="display:flex;align-items:center;gap:8px;"><span class="material-icons">account_balance</span> Private Credit Systemic Risk Monitor</h2></div>';
+    html += '<div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:12px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #3b82f6;">';
+    html += '<p style="color:#94a3b8;font-size:14px;line-height:1.7;margin:0;">Based on the <strong style="color:#e2e8f0;">June 2025 Moody\'s Analytics report "Private Credit & Systemic Risk"</strong>, this page monitors real-time indicators across four risk categories that track the depth of interconnection between private credit funds and the regulated financial system. Private credit assets have surged to over <strong style="color:#e2e8f0;">$2 trillion globally</strong>, with ~75% concentrated in the U.S., making it comparable in size to the high-yield bond and leveraged loan markets.</p>';
+    html += '</div>';
+
+    // ---- Key metrics bar ----
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px;">';
+
+    // BDC ETF
+    const bizdPrice = bizd ? '$' + bizd.current.toFixed(2) : 'N/A';
+    const bizdChg = bizd ? bizd.day_change : null;
+    const bizdColor = bizdChg >= 0 ? '#22c55e' : '#ef4444';
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">BIZD (BDC ETF)</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:' + (bizd ? bizdColor : '#888') + ';">' + bizdPrice + '</div>';
+    html += bizd ? '<div style="font-size:12px;color:' + bizdColor + ';">' + (bizdChg >= 0 ? '+' : '') + bizdChg.toFixed(2) + '%</div>' : '';
+    html += '</div>';
+
+    // HY Spread
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">HY Credit Spread</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:#f59e0b;">' + (hySpread ? hySpread.toFixed(0) + ' bps' : 'N/A') + '</div>';
+    html += '<div style="font-size:12px;">' + stressLevel(hySpread, {yellow: 400, red: 600}) + '</div>';
+    html += '</div>';
+
+    // CCC Spread
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">CCC & Lower Spread</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:#f59e0b;">' + (cccSpread ? cccSpread.toFixed(0) + ' bps' : 'N/A') + '</div>';
+    html += '<div style="font-size:12px;">' + stressLevel(cccSpread, {yellow: 800, red: 1200}) + '</div>';
+    html += '</div>';
+
+    // Fed Funds Rate
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">Fed Funds Rate</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:#8b5cf6;">' + (fedFunds ? fedFunds.toFixed(2) + '%' : 'N/A') + '</div>';
+    html += '<div style="font-size:12px;">' + stressLevel(fedFunds, {yellow: 4.5, red: 5.5}) + '</div>';
+    html += '</div>';
+
+    // 10Y Treasury
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">10-Year Treasury</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:#8b5cf6;">' + (dgs10 ? dgs10.toFixed(2) + '%' : 'N/A') + '</div>';
+    html += '<div style="font-size:12px;">' + stressLevel(dgs10, {yellow: 4.5, red: 5.0}) + '</div>';
+    html += '</div>';
+
+    // Loan Tightening
+    html += '<div style="background:#1e293b;border-radius:10px;padding:14px;text-align:center;">';
+    html += '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">C&I Loan Tightening</div>';
+    html += '<div style="font-size:22px;font-weight:700;color:#06b6d4;">' + (loanTightening !== null ? loanTightening.toFixed(1) + '%' : 'N/A') + '</div>';
+    html += '<div style="font-size:12px;">' + stressLevel(loanTightening, {yellow: 20, red: 40}) + '</div>';
+    html += '</div>';
+
+    html += '</div>';
+
+    // ===========================================================================
+    // CATEGORY 1: Interconnectedness & Contagion
+    // ===========================================================================
+    html += '<div style="background:#1e293b;border-radius:12px;padding:24px;margin-bottom:24px;border-left:4px solid #ef4444;">';
+    html += '<h3 style="color:#f8fafc;margin:0 0 6px 0;display:flex;align-items:center;gap:8px;"><span class="material-icons" style="color:#ef4444;">hub</span> Category 1: Interconnectedness & Contagion</h3>';
+    html += '<p style="color:#64748b;font-size:13px;margin:0 0 16px 0;">How tightly is private credit woven into the banking and insurance sectors?</p>';
+
+    // BDC Spillover
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">BDC "Spillover" Pricing</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Because private credit funds are opaque, publicly traded BDCs serve as the best available stress signal. Sharp drawdowns indicate fundamental cracks. As of early 2026, BDCs were down ~16% YoY.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> BIZD drawdown > 15% from 52-week high, or multiple BDCs trading below NAV</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('BIZD', 'BDC ETF') + pcStockChip('ARCC', 'Ares') + pcStockChip('MAIN', 'Main St') + pcStockChip('FSK', 'FS KKR') + pcStockChip('BXSL', 'Blackstone') + pcStockChip('OBDC', 'Blue Owl') + pcStockChip('GSBD', 'Goldman') + '</div>';
+    html += '</div>';
+
+    // Bank NBFI Exposure
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Bank Lending to Non-Bank Financial Institutions</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Banks provide credit lines and warehouse facilities to private credit funds — accounting for ~11.2% of bank loans in early 2026. Watch for pullbacks in these facilities, which would force funds to dump liquid assets.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Bank stocks declining while credit spreads widen simultaneously; Senior Loan Officer Survey showing tightening > 40%</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('JPM', 'Largest NBFI lender') + pcStockChip('GS', 'SRT originator') + pcStockChip('MS', 'Wealth channel') + pcStockChip('C', 'Credit lines') + pcFredChip('DRTSCILM', 'Tightening') + '</div>';
+    html += '</div>';
+
+    // Significant Risk Transfers
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Significant Risk Transfers (SRTs)</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Banks pay private credit investors to absorb "first loss" risk on loan portfolios. A freeze or spike in SRT pricing indicates banks can\'t offload risk. Monitor bank stock performance alongside credit spreads as a proxy.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Sudden widening of HY spreads + bank stock selloff = potential SRT market freeze</div>';
+    html += '<div style="margin-top:8px;">' + pcFredChip('BAMLH0A0HYM2', 'HY spread') + pcFredChip('BAMLH0A3HYC', 'CCC spread') + pcStockChip('GS', 'SRT proxy') + '</div>';
+    html += '</div>';
+
+    // Alt Managers
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Alternative Asset Manager Health (GP Side)</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">These firms manage private credit funds. Their stock prices reflect fundraising momentum, deployment pace, and market confidence in the asset class. A drawdown here signals institutional investors pulling back.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#ef4444;">Stress trigger:</strong> Alt manager stocks falling > 20% while fund AUM growth stalls</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('BX', 'Blackstone') + pcStockChip('APO', 'Apollo') + pcStockChip('ARES', 'Ares') + pcStockChip('KKR', 'KKR') + pcStockChip('OWL', 'Blue Owl') + '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // ===========================================================================
+    // CATEGORY 2: Masked Stress Indicators
+    // ===========================================================================
+    html += '<div style="background:#1e293b;border-radius:12px;padding:24px;margin-bottom:24px;border-left:4px solid #f59e0b;">';
+    html += '<h3 style="color:#f8fafc;margin:0 0 6px 0;display:flex;align-items:center;gap:8px;"><span class="material-icons" style="color:#f59e0b;">visibility_off</span> Category 2: "Masked" Stress Indicators</h3>';
+    html += '<p style="color:#64748b;font-size:13px;margin:0 0 16px 0;">Are borrowers struggling to pay debts even as formal default rates remain low?</p>';
+
+    // PIK Usage
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Payment-in-Kind (PIK) Usage</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">When borrowers can\'t pay cash interest, they add it to the loan principal (PIK). High PIK levels mask cash-flow stress. Currently averaging ~8% for public BDCs. This is not directly available via market data, but BDC stock performance and credit spreads serve as proxies.</p>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Current Avg PIK</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">~8%</div><div style="font-size:10px;color:#64748b;">of BDC income</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Warning Level</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">12%+</div><div style="font-size:10px;color:#64748b;">widespread stress</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Crisis Level</div><div style="font-size:18px;font-weight:700;color:#ef4444;">18%+</div><div style="font-size:10px;color:#64748b;">systemic concern</div></div>';
+    html += '</div>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#f59e0b;">Stress trigger:</strong> PIK income exceeding 12% of BDC earnings; rising non-accruals alongside high PIK</div>';
+    html += '</div>';
+
+    // True vs Headline Default
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">"True" vs. Headline Default Rates</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">The formal default rate (~2%) understates real stress. Including distressed exchanges and liability management restructurings, the "true" rate approaches ~5%. Distressed exchanges now make up over 60% of all defaults (per Moody\'s Chart 6). Watch credit spreads for real-time signals.</p>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Headline Default</div><div style="font-size:18px;font-weight:700;color:#22c55e;">~2%</div><div style="font-size:10px;color:#64748b;">formal rate</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">"True" Default</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">~5%</div><div style="font-size:10px;color:#64748b;">incl. restructurings</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Distressed Exchanges</div><div style="font-size:18px;font-weight:700;color:#ef4444;">60%+</div><div style="font-size:10px;color:#64748b;">of all defaults</div></div>';
+    html += '</div>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#f59e0b;">Stress trigger:</strong> CCC spread > 1200bps; HY spread > 600bps = default wave imminent</div>';
+    html += '<div style="margin-top:8px;">' + pcFredChip('BAMLH0A0HYM2', 'HY spread') + pcFredChip('BAMLH0A3HYC', 'CCC spread') + pcStockChip('HYG', 'HY bond ETF') + pcStockChip('JNK', 'HY alt') + '</div>';
+    html += '</div>';
+
+    // Interest Coverage
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Interest Coverage Ratios</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Higher-for-longer rates compress the ratio of borrower earnings (EBITDA) to interest expenses. Most private credit loans are floating-rate. The Fed Funds rate and 10-Year yield directly drive this pressure. When EBITA/interest expense drops below 1.5x, defaults accelerate.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#f59e0b;">Stress trigger:</strong> Fed Funds > 5% sustained; 10Y yield > 5%; leveraged loan ETF (BKLN) declining</div>';
+    html += '<div style="margin-top:8px;">' + pcFredChip('FEDFUNDS', 'Rate pressure') + pcFredChip('DGS10', '10Y yield') + pcStockChip('BKLN', 'Senior loans') + '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // ===========================================================================
+    // CATEGORY 3: Structural & Liquidity Fragility
+    // ===========================================================================
+    html += '<div style="background:#1e293b;border-radius:12px;padding:24px;margin-bottom:24px;border-left:4px solid #8b5cf6;">';
+    html += '<h3 style="color:#f8fafc;margin:0 0 6px 0;display:flex;align-items:center;gap:8px;"><span class="material-icons" style="color:#8b5cf6;">water_drop</span> Category 3: Structural & Liquidity Fragility</h3>';
+    html += '<p style="color:#64748b;font-size:13px;margin:0 0 16px 0;">Could forced selling or liquidity freezes amplify stress into a systemic event?</p>';
+
+    // Redemption Gates
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Redemption Gates & Liquidity Mismatches</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Semi-liquid "evergreen" and "interval" funds offer redemption windows despite holding illiquid assets. When redemption requests exceed liquidity buffers, funds impose gates — limiting withdrawals. This is a primary trigger for systemic fear, as it signals that asset values may be overstated. Watch credit ETF flows and VIX for early warnings.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> News of fund gating + VIX spike above 30 + credit ETF outflows</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('LQD', 'IG liquidity') + pcStockChip('HYG', 'HY flows') + '</div>';
+    html += '</div>';
+
+    // Subscription Lines & System Liquidity
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">System Liquidity & Subscription Line Leverage</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Private credit funds use short-term bank loans (subscription lines) to bridge capital calls. A pullback in these lines forces funds to sell liquid assets, spreading stress to public markets. System-wide liquidity (Fed reserves, reverse repo) provides the backdrop — when liquidity tightens, subscription lines are among the first facilities banks pull.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> Reserve balances declining rapidly; reverse repo near zero; bank stocks falling</div>';
+    html += '<div style="margin-top:8px;">' + pcFredChip('RRPONTSYD', 'Reverse repo') + pcFredChip('WRESBAL', 'Fed reserves') + pcStockChip('JPM', 'Bank health') + '</div>';
+    html += '</div>';
+
+    // CLO & Structural Complexity
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Private Credit CLOs & Structural Complexity</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Over $100 billion of private credit CLOs now securitize middle-market direct loans. This adds leverage layers invisible to end investors and creates potential for contagion through the structured finance chain. The corporate debt-to-GVA ratio has risen significantly, indicating elevated leverage across the system.</p>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#8b5cf6;">Stress trigger:</strong> CLO tranche downgrades; widening of IG-to-HY spread differential; BKLN declining while loan issuance rises</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('BKLN', 'Loan market') + pcStockChip('LQD', 'IG credit') + pcFredChip('BAMLH0A0HYM2', 'HY spread') + '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // ===========================================================================
+    // CATEGORY 4: Sector Concentration Risks
+    // ===========================================================================
+    html += '<div style="background:#1e293b;border-radius:12px;padding:24px;margin-bottom:24px;border-left:4px solid #06b6d4;">';
+    html += '<h3 style="color:#f8fafc;margin:0 0 6px 0;display:flex;align-items:center;gap:8px;"><span class="material-icons" style="color:#06b6d4;">pie_chart</span> Category 4: Sector Concentration Risk</h3>';
+    html += '<p style="color:#64748b;font-size:13px;margin:0 0 16px 0;">Is private credit dangerously concentrated in sectors vulnerable to AI disruption?</p>';
+
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Software & Technology Exposure</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">Private credit has roughly 21% direct exposure to software (approaching 40% when including broader tech services). AI-driven disruption in these sectors could trigger correlated defaults across many funds simultaneously. This is the single largest concentration risk identified in the Moody\'s report.</p>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Software Exposure</div><div style="font-size:18px;font-weight:700;color:#06b6d4;">~21%</div><div style="font-size:10px;color:#64748b;">direct allocation</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Broad Tech Exposure</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">~40%</div><div style="font-size:10px;color:#64748b;">incl. tech services</div></div>';
+    html += '<div style="background:#1e293b;padding:10px;border-radius:6px;text-align:center;"><div style="font-size:10px;color:#64748b;">Private Credit AUM</div><div style="font-size:18px;font-weight:700;color:#e2e8f0;">$2T+</div><div style="font-size:10px;color:#64748b;">global</div></div>';
+    html += '</div>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:6px;"><strong style="color:#06b6d4;">Stress trigger:</strong> IGV drawdown > 25%; cloud/SaaS revenue deceleration; AI agent adoption displacing per-seat software models</div>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('IGV', 'Software ETF') + pcStockChip('XLK', 'Tech sector') + pcStockChip('WCLD', 'Cloud/SaaS') + '</div>';
+    html += '</div>';
+
+    // Cross-reference with Citrini
+    html += '<div style="background:#0f172a;border-radius:8px;padding:16px;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 8px 0;">Cross-Reference: Citrini Memo Overlap</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 10px 0;">The Citrini "2028 Global Intelligence Crisis" memo predicts severe SaaS disruption from AI agents — the same sector where private credit is most concentrated. If Citrini\'s thesis plays out, private credit losses could compound the broader economic shock through the interconnectedness channels tracked above.</p>';
+    html += '<div style="margin-top:8px;">' + pcStockChip('NOW', 'ServiceNow') + pcStockChip('CRM', 'Salesforce') + pcStockChip('MNDY', 'Monday.com') + pcStockChip('ASAN', 'Asana') + '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // ===========================================================================
+    // Report Reference & Disclaimer
+    // ===========================================================================
+    html += '<div style="background:#0f172a;border-radius:12px;padding:20px 24px;margin-bottom:24px;border:1px solid #1e293b;">';
+    html += '<h4 style="color:#e2e8f0;margin:0 0 10px 0;"><span class="material-icons" style="vertical-align:middle;margin-right:6px;font-size:18px;">menu_book</span>Source Report</h4>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 8px 0;"><strong style="color:#e2e8f0;">"Private Credit & Systemic Risk"</strong> — Moody\'s Analytics, June 2025</p>';
+    html += '<p style="color:#94a3b8;font-size:13px;margin:0 0 8px 0;">Authors: Samim Ghamami (NYU), Damien Moore (Moody\'s), Antonio Weiss (Harvard Kennedy School), Martin Wurm (Moody\'s), Mark Zandi (Moody\'s Chief Economist)</p>';
+    html += '<p style="color:#64748b;font-size:12px;margin:0;font-style:italic;">This dashboard is an independent educational project. It was not developed by Moody\'s Analytics and is not affiliated with or endorsed by Moody\'s. The metrics displayed are publicly available market data used to monitor conditions described in the report. This is not investment advice.</p>';
+    html += '</div>';
+
+    return html;
+}
+
 function renderRebuttal() {
     const stocks = dashData.stocks;
     const econ = dashData.economic;
@@ -1949,6 +2264,7 @@ function renderAbout() {
                 <tr><td>Consumer</td><td>Consumer discretionary ETF, Booking Holdings, Redfin — demand destruction and commission compression.</td></tr>
                 <tr><td>Economic</td><td>All 8 FRED indicators with current values, trends, and memo targets.</td></tr>
                 <tr><td>Timeline</td><td>Chronological sequence of every predicted domino from the memo, with the specific testable bets at each step and live indicator chips showing where those metrics stand today.</td></tr>
+                <tr><td>Private Credit</td><td>Systemic risk monitor based on the June 2025 Moody's Analytics report. Tracks BDC health, bank NBFI exposure, credit spreads, interest rate pressure, system liquidity, and software sector concentration risk across 4 categories with live stress indicators.</td></tr>
             </table>
         </div>
 
@@ -1960,7 +2276,7 @@ function renderAbout() {
         </div>
 
         <div class="about-section" style="text-align:center; color:var(--sf-warm-gray-3); font-size:12px; padding:16px;">
-            Built with Claude by Anthropic &middot; Data from Yahoo Finance & FRED &middot; Memo by <a href="https://www.citriniresearch.com/p/2028gic" target="_blank">Citrini Research & Alap Shah</a>
+            Built with Claude by Anthropic &middot; Data from Yahoo Finance & FRED &middot; Memo by <a href="https://www.citriniresearch.com/p/2028gic" target="_blank">Citrini Research & Alap Shah</a> &middot; Private Credit analysis based on Moody's Analytics (June 2025)
         </div>
     </div>`;
 }
